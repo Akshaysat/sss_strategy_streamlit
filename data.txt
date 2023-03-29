@@ -1,0 +1,180 @@
+{
+    "_id": ObjectId("64182ba9b86fa80394037cc0"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-20",
+    "strike": "NSE:BANKNIFTY2332338300PE",
+    "entry_price": 103.95,
+    "sl_price": 155.9,
+    "qty": NumberInt(25),
+    "entry_time": ISODate("2023-03-20T14:27:14.953+0000"),
+    "exit_price": 58.4,
+    "pnl": 1138.75,
+    "exit_time": ISODate("2023-03-20T15:17:18.776+0000"),
+    "exit_type": "TIME-SQ-OFF",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-20-BANKNIFTY2332338300PE.jpeg"
+}
+{
+    "_id": ObjectId("64182ba9b86fa80394037cc1"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-20",
+    "strike": "NSE:BANKNIFTY2332339900CE",
+    "entry_price": 105.65,
+    "sl_price": 158.5,
+    "qty": NumberInt(25),
+    "entry_time": ISODate("2023-03-20T12:57:10.211+0000"),
+    "exit_price": 132.45,
+    "pnl": -670.0,
+    "exit_time": ISODate("2023-03-20T15:17:20.311+0000"),
+    "exit_type": "TIME-SQ-OFF",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-20-BANKNIFTY2332339900CE.jpeg"
+}
+{
+    "_id": ObjectId("64197ca17173479aad9efe01"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-21",
+    "strike": "NSE:BANKNIFTY2332338800PE",
+    "entry_price": 108.0,
+    "sl_price": 162.0,
+    "qty": NumberInt(25),
+    "entry_time": ISODate("2023-03-21T09:21:01.429+0000"),
+    "exit_price": 30.15,
+    "pnl": 1946.25,
+    "exit_time": ISODate("2023-03-21T15:15:04.006+0000"),
+    "exit_type": "TIME-SQ-OFF",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-21-BANKNIFTY2332338800PE.jpeg"
+}
+{
+    "_id": ObjectId("641ad6d705034ea19d5303d5"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-22",
+    "strike": "NSE:BANKNIFTY2332339600PE",
+    "entry_price": 100.25,
+    "sl_price": 150.4,
+    "qty": NumberInt(25),
+    "entry_time": ISODate("2023-03-22T12:08:04.679+0000"),
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-22-BANKNIFTY2332339600PE.jpeg",
+    "exit_price": 83.3,
+    "pnl": 423.75,
+    "exit_time": ISODate("2023-03-22T15:52:08.992+0000"),
+    "exit_type": "TIME-SQ-OFF"
+}
+{
+    "_id": ObjectId("641c1817e91ce929af23ec41"),
+    "flag": NumberInt(2),
+    "trade_date": "2023-03-23",
+    "strike": "NSE:BANKNIFTY2332339900PE",
+    "entry_price": 99.6,
+    "sl_price": 149.4,
+    "qty": NumberInt(25),
+    "entry_time": ISODate("2023-03-23T10:02:30.170+0000"),
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-23-BANKNIFTY2332339900PE.jpeg",
+    "exit_price": 149.4,
+    "exit_time": ISODate("2023-03-23T14:42:47.828+0000"),
+    "exit_type": "SL-HIT",
+    "pnl": -1245.0
+}
+{
+    "_id": ObjectId("641c1817e91ce929af23ec42"),
+    "flag": NumberInt(2),
+    "trade_date": "2023-03-23",
+    "strike": "NSE:BANKNIFTY2332339900CE",
+    "entry_price": 118.25,
+    "sl_price": 177.4,
+    "qty": NumberInt(25),
+    "entry_time": ISODate("2023-03-23T09:20:03.774+0000"),
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-23-BANKNIFTY2332339900CE.jpeg",
+    "exit_price": 177.4,
+    "exit_time": ISODate("2023-03-23T09:51:23.245+0000"),
+    "exit_type": "SL-HIT",
+    "pnl": -1478.75
+}
+{
+    "_id": ObjectId("641d7dd0b5fb206b78a5b8f5"),
+    "flag": NumberInt(2),
+    "trade_date": "2023-03-24",
+    "strike": "NSE:BANKNIFTY23MAR38900PE",
+    "entry_price": 102.3,
+    "sl_price": 153.45,
+    "qty": NumberInt(25),
+    "entry_time": "12:30:00",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-24-BANKNIFTY23MAR38900PE.jpeg",
+    "exit_price": 153.45,
+    "exit_time": ISODate("2023-03-24T14:31:03.867+0000"),
+    "exit_type": "SL-HIT",
+    "pnl": -1278.75
+}
+{
+    "_id": ObjectId("641d7dd0b5fb206b78a5b8f6"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-24",
+    "strike": "NSE:BANKNIFTY23MAR40300CE",
+    "entry_price": 102.8,
+    "sl_price": 154.2,
+    "qty": NumberInt(25),
+    "entry_time": "12:50:00",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-24-BANKNIFTY23MAR40300CE.jpeg",
+    "exit_price": 50.95,
+    "pnl": 51.85,
+    "exit_time": "16:09:00",
+    "exit_type": "TIME-SQ-OFF"
+}
+{
+    "_id": ObjectId("642165c99053b0dfcc0f892d"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-27",
+    "strike": "NSE:BANKNIFTY23MAR40100CE",
+    "entry_price": 88.95,
+    "sl_price": 133.4,
+    "qty": NumberInt(25),
+    "entry_time": "09:20:00",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-27-BANKNIFTY23MAR40100CE.jpeg",
+    "exit_price": 47.9,
+    "pnl": 41.05,
+    "exit_time": "15:15:00",
+    "exit_type": "TIME-SQ-OFF"
+}
+{
+    "_id": ObjectId("642165c99053b0dfcc0f892c"),
+    "flag": NumberInt(2),
+    "trade_date": "2023-03-27",
+    "strike": "NSE:BANKNIFTY23MAR38900PE",
+    "entry_price": 94.5,
+    "sl_price": 141.75,
+    "qty": NumberInt(25),
+    "entry_time": "09:35:00",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-27-BANKNIFTY23MAR38900PE.jpeg",
+    "exit_price": 141.75,
+    "exit_time": "11:20:00",
+    "exit_type": "SL-HIT",
+    "pnl": -47.25
+}
+{
+    "_id": ObjectId("6422b75b7f323401c9dc6ac4"),
+    "flag": NumberInt(1),
+    "trade_date": "2023-03-28",
+    "strike": "NSE:BANKNIFTY23MAR39800CE",
+    "entry_price": 93.75,
+    "sl_price": 140.6,
+    "qty": NumberInt(25),
+    "entry_time": "09:40:00",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-28-BANKNIFTY23MAR39800CE.jpeg",
+    "exit_price": 66.6,
+    "pnl": 27.15,
+    "exit_time": "15:16:00",
+    "exit_type": "TIME-SQ-OFF"
+}
+{
+    "_id": ObjectId("6422b75b7f323401c9dc6ac3"),
+    "flag": NumberInt(2),
+    "trade_date": "2023-03-28",
+    "strike": "NSE:BANKNIFTY23MAR39300PE",
+    "entry_price": 91.8,
+    "sl_price": 137.7,
+    "qty": NumberInt(25),
+    "entry_time": "13:10:00",
+    "pnl_movement": "https://sss-pnl-charts.s3.ap-south-1.amazonaws.com/2023-03-28-BANKNIFTY23MAR39300PE.jpeg",
+    "exit_price": 137.7,
+    "exit_time": "14:12:00",
+    "exit_type": "SL-HIT",
+    "pnl": -45.9
+}
