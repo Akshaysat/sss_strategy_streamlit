@@ -201,7 +201,7 @@ else:
     # col3.metric(label="Avg. daily profit", value="₹ " + str(int(avg_profit_per_day)))
     st.write("-----")
     st.subheader("Strategy Statistics")
-    st.table(strategy_stats)
+    st.table(strategy_stats.style.format(precision=2))
     st.write("-----")
 
     # Show equity curve
@@ -224,6 +224,8 @@ else:
 
     # Month-wise PNL
     st.header("Month-wise PNL")
+    # stats_df_month = stats_df_month.style.format(precision=2)
+
     st.table(
         stats_df_month[["month_year", "pnl"]].style.applymap(
             color_survived, subset=["pnl"]
