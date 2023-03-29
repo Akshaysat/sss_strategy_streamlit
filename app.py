@@ -201,7 +201,8 @@ else:
     # col3.metric(label="Avg. daily profit", value="₹ " + str(int(avg_profit_per_day)))
     st.write("-----")
     st.subheader("Strategy Statistics")
-    st.table(strategy_stats.style.format(precision=2))
+    # st.table(strategy_stats.style.format(precision=2))
+    st.table(strategy_stats)
     st.write("-----")
 
     # Show equity curve
