@@ -197,7 +197,7 @@ else:
     st.write("-----")
     col1, col2, col3 = st.columns(3)
     col1.metric(label="Win %", value=str(win_ratio) + " %")
-    col2.metric(label="Net Profit (in pts.)", value=str(int(net_profit)))
+    col2.metric(label="Net Profit (in pts.)", value=str(round(net_profit, 2)))
     # col3.metric(label="Avg. daily profit", value="₹ " + str(int(avg_profit_per_day)))
     st.write("-----")
     st.subheader("Strategy Statistics")
