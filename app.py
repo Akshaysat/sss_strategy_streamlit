@@ -190,7 +190,7 @@ else:
         # "Average Loss on loss days": avg_loss_on_loss_days,
     }
     strategy_stats = pd.DataFrame(KPI.values(), index=KPI.keys(), columns=[" "]).astype(
-        int
+        float
     )
 
     # Show Statistics
