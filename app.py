@@ -1,6 +1,5 @@
 import streamlit as st
 import json
-from kiteconnect import KiteConnect
 import time
 import pandas as pd
 import datetime as dt
