@@ -163,18 +163,18 @@ else:
     max_drawdown = round(stats_df["drawdown"].min(), 2)
     max_winning_streak = max(stats_df["win_streak"])
     max_losing_streak = max(stats_df["loss_streak"])
-    # avg_profit_on_win_days = stats_df[stats_df["pnl"] > 0]["pnl"].sum() / len(
-    #     stats_df[stats_df["pnl"] > 0]
-    # )
-    # avg_loss_on_loss_days = stats_df[stats_df["pnl"] < 0]["pnl"].sum() / len(
-    #     stats_df[stats_df["pnl"] < 0]
-    # )
-    # avg_profit_per_day = stats_df["pnl"].sum() / len(stats_df)
-    # expectancy = round(
-    #     (avg_profit_on_win_days * win_ratio + avg_loss_on_loss_days * (100 - win_ratio))
-    #     * 0.01,
-    #     2,
-    # )
+    avg_profit_on_win_days = stats_df[stats_df["pnl"] > 0]["pnl"].sum() / len(
+        stats_df[stats_df["pnl"] > 0]
+    )
+    avg_loss_on_loss_days = stats_df[stats_df["pnl"] < 0]["pnl"].sum() / len(
+        stats_df[stats_df["pnl"] < 0]
+    )
+    avg_profit_per_day = stats_df["pnl"].sum() / len(stats_df)
+    expectancy = round(
+        (avg_profit_on_win_days * win_ratio + avg_loss_on_loss_days * (100 - win_ratio))
+        * 0.01,
+        2,
+    )
     net_profit = round(stats_df["cum_pnl"].iloc[-1], 2)
 
     KPI = {
@@ -186,8 +186,8 @@ else:
         "Max Winning Streak": max_winning_streak,
         "Max Losing Streak": max_losing_streak,
         "Max Drawdown": max_drawdown,
-        # "Average Profit on win days": avg_profit_on_win_days,
-        # "Average Loss on loss days": avg_loss_on_loss_days,
+        "Average Profit on win days": avg_profit_on_win_days,
+        "Average Loss on loss days": avg_loss_on_loss_days,
     }
     strategy_stats = pd.DataFrame(KPI.values(), index=KPI.keys(), columns=[" "]).astype(
         float
@@ -198,7 +198,9 @@ else:
     col1, col2, col3 = st.columns(3)
     col1.metric(label="Win %", value=str(win_ratio) + " %")
     col2.metric(label="Net Profit (in pts.)", value=str(round(net_profit, 2)))
-    # col3.metric(label="Avg. daily profit", value="₹ " + str(int(avg_profit_per_day)))
+    col3.metric(
+        label="Avg. daily profit (in pts.)", value=str(round(avg_profit_per_day, 2))
+    )
     st.write("-----")
     st.subheader("Strategy Statistics")
     # st.table(strategy_stats.style.format(precision=2))
