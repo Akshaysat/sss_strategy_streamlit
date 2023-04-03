@@ -145,12 +145,20 @@ else:
     stats_df["month"] = (
         pd.to_datetime(stats_df["month"], format="%m").dt.month_name().str.slice(stop=3)
     )
+    stats_df["week_day"] = (
+        stats_df["trade_date"]
+        .apply(lambda x: dt.datetime.strptime(x, "%Y-%m-%d"))
+        .dt.day_name()
+    )
     stats_df["month_year"] = (
         stats_df["month"] + " " + stats_df["year"].astype(str)
     ).str.slice(stop=11)
     # Dataframe for monthly returns
     stats_df_month = stats_df.groupby(["month_year"], sort=False).sum()
     stats_df_month = stats_df_month.reset_index()
+
+    stats_df_weekday = stats_df.groupby(["week_day"], sort=False).sum()
+    stats_df_weekday = stats_df_weekday.reset_index()
 
     # Calculate Statistics
     total_days = len(stats_df)
@@ -231,6 +239,16 @@ else:
 
     st.table(
         stats_df_month[["month_year", "pnl"]].style.applymap(
+            color_survived, subset=["pnl"]
+        )
+    )
+
+    # Month-wise PNL
+    st.header("Weekday-wise PNL")
+    # stats_df_month = stats_df_month.style.format(precision=2)
+
+    st.table(
+        stats_df_weekday[["week_day", "pnl"]].style.applymap(
             color_survived, subset=["pnl"]
         )
     )
