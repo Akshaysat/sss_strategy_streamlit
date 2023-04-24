@@ -23,7 +23,7 @@ st.markdown(
 
 st.write("-----")
 
-strategy_name = st.selectbox("Select the Strategy", ["SSS"]).lower()
+strategy_name = st.selectbox("Select the Strategy", ["STS"]).lower()
 
 # connect to the database
 mongo = MongoClient(st.secrets["mongo_db"]["mongo_url"])
@@ -243,7 +243,7 @@ else:
         )
     )
 
-    # Month-wise PNL
+    # Week-wise PNL
     st.header("Weekday-wise PNL")
     # stats_df_month = stats_df_month.style.format(precision=2)
 
