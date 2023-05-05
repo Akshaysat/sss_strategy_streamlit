@@ -50,6 +50,7 @@ df = pd.DataFrame(
     ],
 )
 df = df.set_index("strike")
+df["net_pnl"] = round(df["entry_price"] * 0.98 - df["exit_price"], 2)
 
 feature = st.radio(
     "What do you want to analyze?",
@@ -67,7 +68,7 @@ if feature == "Analyze a particular day's trade":
     if df_selected_date.shape[0] == 0:
         st.info(f"No Trade on {selected_date}")
     else:
-        net_pnl = round(df_selected_date["pnl"].sum(), 2)
+        net_pnl = round(df_selected_date["net_pnl"].sum(), 2)
         if net_pnl >= 0:
             st.success(f"Net PNL (in pts.): \n {net_pnl}")
         else:
@@ -93,14 +94,17 @@ if feature == "Analyze a particular day's trade":
         st.write("---")
 
 else:
-    stats_df = df[["trade_date", "pnl"]].groupby(["trade_date"], sort=False).sum()
+
+    # st.write(df)
+
+    stats_df = df[["trade_date", "net_pnl"]].groupby(["trade_date"], sort=False).sum()
     stats_df.reset_index(inplace=True)
 
     # set inital streak values
     stats_df["loss_streak"] = 0
     stats_df["win_streak"] = 0
 
-    if stats_df["pnl"][0] > 0:
+    if stats_df["net_pnl"][0] > 0:
         stats_df["loss_streak"][0] = 0
         stats_df["win_streak"][0] = 1
 
@@ -111,7 +115,7 @@ else:
     # find winning and losing streaks
     for i in range(1, stats_df.shape[0]):
 
-        if stats_df["pnl"][i] > 0:
+        if stats_df["net_pnl"][i] > 0:
             stats_df["loss_streak"][i] = 0
             stats_df["win_streak"][i] = stats_df["win_streak"][i - 1] + 1
 
@@ -120,23 +124,23 @@ else:
             stats_df["loss_streak"][i] = stats_df["loss_streak"][i - 1] + 1
 
     # cumulative PNL
-    stats_df["cum_pnl"] = stats_df["pnl"].cumsum()
+    stats_df["cum_pnl"] = stats_df["net_pnl"].cumsum()
 
     # Create Drawdown column
     stats_df["drawdown"] = 0
     for i in range(0, stats_df.shape[0]):
 
         if i == 0:
-            if stats_df["pnl"].iloc[i] > 0:
+            if stats_df["net_pnl"].iloc[i] > 0:
                 stats_df["drawdown"].iloc[i] = 0
             else:
-                stats_df["drawdown"].iloc[i] = stats_df["pnl"].iloc[i]
+                stats_df["drawdown"].iloc[i] = stats_df["net_pnl"].iloc[i]
         else:
-            if stats_df["pnl"].iloc[i] + stats_df["drawdown"].iloc[i - 1] > 0:
+            if stats_df["net_pnl"].iloc[i] + stats_df["drawdown"].iloc[i - 1] > 0:
                 stats_df["drawdown"].iloc[i] = 0
             else:
                 stats_df["drawdown"].iloc[i] = (
-                    stats_df["pnl"].iloc[i] + stats_df["drawdown"].iloc[i - 1]
+                    stats_df["net_pnl"].iloc[i] + stats_df["drawdown"].iloc[i - 1]
                 )
 
     # create monthly data
@@ -162,22 +166,22 @@ else:
 
     # Calculate Statistics
     total_days = len(stats_df)
-    winning_days = (stats_df["pnl"] > 0).sum()
-    losing_days = (stats_df["pnl"] < 0).sum()
+    winning_days = (stats_df["net_pnl"] > 0).sum()
+    losing_days = (stats_df["net_pnl"] < 0).sum()
 
     win_ratio = round((winning_days / total_days) * 100, 2)
-    max_profit = round(stats_df["pnl"].max(), 2)
-    max_loss = round(stats_df["pnl"].min(), 2)
+    max_profit = round(stats_df["net_pnl"].max(), 2)
+    max_loss = round(stats_df["net_pnl"].min(), 2)
     max_drawdown = round(stats_df["drawdown"].min(), 2)
     max_winning_streak = max(stats_df["win_streak"])
     max_losing_streak = max(stats_df["loss_streak"])
-    avg_profit_on_win_days = stats_df[stats_df["pnl"] > 0]["pnl"].sum() / len(
-        stats_df[stats_df["pnl"] > 0]
+    avg_profit_on_win_days = stats_df[stats_df["net_pnl"] > 0]["net_pnl"].sum() / len(
+        stats_df[stats_df["net_pnl"] > 0]
     )
-    avg_loss_on_loss_days = stats_df[stats_df["pnl"] < 0]["pnl"].sum() / len(
-        stats_df[stats_df["pnl"] < 0]
+    avg_loss_on_loss_days = stats_df[stats_df["net_pnl"] < 0]["net_pnl"].sum() / len(
+        stats_df[stats_df["net_pnl"] < 0]
     )
-    avg_profit_per_day = stats_df["pnl"].sum() / len(stats_df)
+    avg_profit_per_day = stats_df["net_pnl"].sum() / len(stats_df)
     expectancy = round(
         (avg_profit_on_win_days * win_ratio + avg_loss_on_loss_days * (100 - win_ratio))
         * 0.01,
@@ -238,8 +242,8 @@ else:
     # stats_df_month = stats_df_month.style.format(precision=2)
 
     st.table(
-        stats_df_month[["month_year", "pnl"]].style.applymap(
-            color_survived, subset=["pnl"]
+        stats_df_month[["month_year", "net_pnl"]].style.applymap(
+            color_survived, subset=["net_pnl"]
         )
     )
 
@@ -248,7 +252,7 @@ else:
     # stats_df_month = stats_df_month.style.format(precision=2)
 
     st.table(
-        stats_df_weekday[["week_day", "pnl"]].style.applymap(
-            color_survived, subset=["pnl"]
+        stats_df_weekday[["week_day", "net_pnl"]].style.applymap(
+            color_survived, subset=["net_pnl"]
         )
     )
