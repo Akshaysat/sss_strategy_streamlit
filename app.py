@@ -23,7 +23,7 @@ st.markdown(
 
 st.write("-----")
 
-strategy_name = st.selectbox("Select the Strategy", ["STS", "CPS", "STBT-BN"]).lower()
+strategy_name = st.selectbox("Select the Strategy", ["STS", "CPS"]).lower()
 
 # connect to the database
 mongo = MongoClient(st.secrets["mongo_db"]["mongo_url"])
