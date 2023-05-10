@@ -266,8 +266,12 @@ else:
     st.header("Weekday-wise PNL")
     # stats_df_month = stats_df_month.style.format(precision=2)
 
-    st.table(
-        stats_df_weekday[["week_day", "net_pnl"]].style.applymap(
-            color_survived, subset=["net_pnl"]
+    try:
+
+        st.table(
+            stats_df_weekday[["week_day", "net_pnl"]].style.applymap(
+                color_survived, subset=["net_pnl"]
+            )
         )
-    )
+    except:
+        pass
