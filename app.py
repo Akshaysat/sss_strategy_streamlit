@@ -23,12 +23,23 @@ st.markdown(
 
 st.write("-----")
 
-strategy_name = st.selectbox("Select the Strategy", ["STS", "CPS"]).lower()
+strategy_name = st.selectbox(
+    "Select the Strategy",
+    [
+        "STS (SuperTrend Strategy)",
+        "CPS (Combined Premium Strategy)",
+        "STBT-BN (BANKNIFTY)",
+        "STBT-N (NIFTY)",
+        "STBT-FN (FINNIFTY)",
+    ],
+).lower()
+
+strategy_db_name = strategy_name.split(" ")[0]
 
 # connect to the database
 mongo = MongoClient(st.secrets["mongo_db"]["mongo_url"])
 mydb = mongo["test"]
-coll = mydb[f"systematic-strategy-{strategy_name}"]
+coll = mydb[f"systematic-strategy-{strategy_db_name}"]
 
 
 st.write("-----")
@@ -84,14 +95,18 @@ if feature == "Analyze a particular day's trade":
             ].T
         )
 
-        pnl_movement_link = df_selected_date.iloc[i][9]
+        try:
+            pnl_movement_link = df_selected_date.iloc[i][9]
 
-        st.image(
-            pnl_movement_link,
-            caption="PNL Movement",
-        )
+            st.image(
+                pnl_movement_link,
+                caption="PNL Movement",
+            )
 
-        st.write("---")
+            st.write("---")
+        except:
+            st.write("---")
+            continue
 
 else:
 
