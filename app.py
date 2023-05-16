@@ -31,6 +31,9 @@ strategy_name = st.selectbox(
         "STBT-BN (BANKNIFTY)",
         "STBT-N (NIFTY)",
         "STBT-FN (FINNIFTY)",
+        "STBT-12PM-BN (BANKNIFTY)",
+        "STBT-12PM-N (NIFTY)",
+        "STBT-12PM-FN (FINNIFTY)",
     ],
 ).lower()
 
