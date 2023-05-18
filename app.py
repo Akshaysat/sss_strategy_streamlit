@@ -82,7 +82,12 @@ df["entry_price_with_slippage"] = df.apply(
     axis=1,
 )
 
-df["net_pnl"] = round(df["entry_price_with_slippage"] * 0.98 - df["exit_price"], 2)
+df["net_pnl"] = df.apply(
+    lambda x: round(x["entry_price_with_slippage"] - x["exit_price"], 2)
+    if x["trade_type"] == "SHORT"
+    else round(x["exit_price"] - x["entry_price_with_slippage"], 2),
+    axis=1,
+)
 
 feature = st.radio(
     "What do you want to analyze?",
@@ -108,16 +113,26 @@ if feature == "Analyze a particular day's trade":
 
     st.write("")
 
-    for i in range(df_selected_date.shape[0]):
+    for i in df_selected_date.index:
         st.table(
-            df_selected_date.iloc[
+            df_selected_date.loc[
                 i,
-                [1, 4, 2, 5, 7, 8, 6],
+                [
+                    "entry_price",
+                    "exit_price",
+                    "entry_time",
+                    "exit_time",
+                    "sl_price",
+                    "exit_type",
+                    "trade_type",
+                    "entry_price_with_slippage",
+                    "net_pnl",
+                ],
             ].T
         )
 
         try:
-            pnl_movement_link = df_selected_date.iloc[i][9]
+            pnl_movement_link = df_selected_date.loc[i]["pnl_movement"]
 
             st.image(
                 pnl_movement_link,
