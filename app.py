@@ -6,6 +6,7 @@ import datetime as dt
 from pymongo import MongoClient, DESCENDING
 import requests
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 def color_survived(val):
@@ -215,6 +216,22 @@ else:
     stats_df_weekday = stats_df.groupby(["week_day"], sort=False).sum()
     stats_df_weekday = stats_df_weekday.reset_index()
 
+    cats = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ]
+
+    stats_df_weekday["week_day"] = pd.Categorical(
+        stats_df_weekday["week_day"], categories=cats, ordered=True
+    )
+
+    stats_df_weekday = stats_df_weekday.sort_values("week_day")
+
     # Calculate Statistics
     total_days = len(stats_df)
     winning_days = (stats_df["net_pnl"] > 0).sum()
@@ -226,13 +243,17 @@ else:
     max_drawdown = round(stats_df["drawdown"].min(), 2)
     max_winning_streak = max(stats_df["win_streak"])
     max_losing_streak = max(stats_df["loss_streak"])
-    avg_profit_on_win_days = stats_df[stats_df["net_pnl"] > 0]["net_pnl"].sum() / len(
-        stats_df[stats_df["net_pnl"] > 0]
+    avg_profit_on_win_days = round(
+        stats_df[stats_df["net_pnl"] > 0]["net_pnl"].sum()
+        / len(stats_df[stats_df["net_pnl"] >= 0]),
+        2,
     )
-    avg_loss_on_loss_days = stats_df[stats_df["net_pnl"] < 0]["net_pnl"].sum() / len(
-        stats_df[stats_df["net_pnl"] < 0]
+    avg_loss_on_loss_days = round(
+        stats_df[stats_df["net_pnl"] < 0]["net_pnl"].sum()
+        / len(stats_df[stats_df["net_pnl"] < 0]),
+        2,
     )
-    avg_profit_per_day = stats_df["net_pnl"].sum() / len(stats_df)
+    avg_profit_per_day = round(stats_df["net_pnl"].sum() / len(stats_df), 2)
     expectancy = round(
         (avg_profit_on_win_days * win_ratio + avg_loss_on_loss_days * (100 - win_ratio))
         * 0.01,
@@ -251,6 +272,7 @@ else:
         "Max Drawdown": max_drawdown,
         "Average Profit on win days": avg_profit_on_win_days,
         "Average Loss on loss days": avg_loss_on_loss_days,
+        "System Expectancy": expectancy,
     }
     strategy_stats = pd.DataFrame(KPI.values(), index=KPI.keys(), columns=[" "]).astype(
         float
@@ -267,7 +289,7 @@ else:
     st.write("-----")
     st.subheader("Strategy Statistics")
     # st.table(strategy_stats.style.format(precision=2))
-    st.table(strategy_stats)
+    st._legacy_table(strategy_stats)
     st.write("-----")
 
     # Show equity curve
@@ -290,24 +312,41 @@ else:
 
     # Month-wise PNL
     st.header("Month-wise PNL")
-    # stats_df_month = stats_df_month.style.format(precision=2)
 
-    st.table(
-        stats_df_month[["month_year", "net_pnl"]].style.applymap(
-            color_survived, subset=["net_pnl"]
-        )
+    stats_df_month["net_pnl"] = stats_df_month["net_pnl"].round(2)
+
+    stats_df_month["color"] = [
+        "lightgreen" if x > 0 else "lightcoral" for x in stats_df_month["net_pnl"]
+    ]
+
+    fig = px.bar(
+        stats_df_month,
+        x="month_year",
+        y="net_pnl",
+        color="color",
+        color_discrete_map="identity",
     )
+
+    st.plotly_chart(fig)
+    st.write("-----")
 
     # Week-wise PNL
     st.header("Weekday-wise PNL")
     # stats_df_month = stats_df_month.style.format(precision=2)
 
-    try:
+    stats_df_weekday["net_pnl"] = stats_df_weekday["net_pnl"].round(2)
 
-        st.table(
-            stats_df_weekday[["week_day", "net_pnl"]].style.applymap(
-                color_survived, subset=["net_pnl"]
-            )
-        )
-    except:
-        pass
+    stats_df_weekday["color"] = [
+        "lightgreen" if x > 0 else "lightcoral" for x in stats_df_weekday["net_pnl"]
+    ]
+
+    fig = px.bar(
+        stats_df_weekday,
+        x="week_day",
+        y="net_pnl",
+        color="color",
+        color_discrete_map="identity",
+    )
+
+    st.plotly_chart(fig)
+    st.write(stats_df_weekday)
