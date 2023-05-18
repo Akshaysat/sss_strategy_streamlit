@@ -70,10 +70,19 @@ df = pd.DataFrame(
         "exit_time",
         "exit_type",
         "pnl_movement",
+        "trade_type",
     ],
 )
 df = df.set_index("strike")
-df["net_pnl"] = round(df["entry_price"] * 0.98 - df["exit_price"], 2)
+
+df["entry_price_with_slippage"] = df.apply(
+    lambda x: round(x["entry_price"] * 0.98, 2)
+    if x["trade_type"] == "SHORT"
+    else round(x["entry_price"] * 1.02, 2),
+    axis=1,
+)
+
+df["net_pnl"] = round(df["entry_price_with_slippage"] * 0.98 - df["exit_price"], 2)
 
 feature = st.radio(
     "What do you want to analyze?",
