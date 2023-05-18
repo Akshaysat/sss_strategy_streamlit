@@ -23,6 +23,15 @@ st.markdown(
 
 st.write("-----")
 
+strategy_rules_url = "https://notebook.zoho.in/app/index.html#/shared/notecards/u3i1sf2b21dfa93b3480b94958488a3ba2a11"
+
+st.markdown(
+    f"""
+<a href={strategy_rules_url}><button style="background-color:GreenYellow;">Strategy Rules</button></a>
+""",
+    unsafe_allow_html=True,
+)
+
 strategy_name = st.selectbox(
     "Select the Strategy",
     [
