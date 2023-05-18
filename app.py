@@ -294,19 +294,17 @@ else:
 
     # Show equity curve
     st.subheader("Equity Curve")
-    fig_pnl = px.line(
-        stats_df,
-        x="trade_date",
-        y="cum_pnl",
-        width=800,
-        height=500,
-    )
+    fig_pnl = px.line(stats_df, x="trade_date", y="cum_pnl", width=800, height=500)
+    fig_pnl.update_xaxes(showgrid=False)  # turn off x-axis gridlines
+    fig_pnl.update_yaxes(showgrid=True)  # turn off y-axis gridlines
     st.plotly_chart(fig_pnl)
     st.write("-----")
 
     # show drawdown curve
     st.subheader("Drawdown Curve")
     fig_dd = px.line(stats_df, x="trade_date", y="drawdown", width=800, height=500)
+    fig_dd.update_xaxes(showgrid=False)  # turn off x-axis gridlines
+    fig_dd.update_yaxes(showgrid=True)  # turn off y-axis gridlines
     st.plotly_chart(fig_dd)
     st.write("-----")
 
@@ -319,7 +317,7 @@ else:
         "lightgreen" if x > 0 else "lightcoral" for x in stats_df_month["net_pnl"]
     ]
 
-    fig = px.bar(
+    fig_stats_month = px.bar(
         stats_df_month,
         x="month_year",
         y="net_pnl",
@@ -327,7 +325,10 @@ else:
         color_discrete_map="identity",
     )
 
-    st.plotly_chart(fig)
+    fig_stats_month.update_xaxes(showgrid=False)  # turn off x-axis gridlines
+    fig_stats_month.update_yaxes(showgrid=False)  # turn off y-axis gridlines
+
+    st.plotly_chart(fig_stats_month)
     st.write("-----")
 
     # Week-wise PNL
@@ -340,7 +341,7 @@ else:
         "lightgreen" if x > 0 else "lightcoral" for x in stats_df_weekday["net_pnl"]
     ]
 
-    fig = px.bar(
+    fig_stats_weekday = px.bar(
         stats_df_weekday,
         x="week_day",
         y="net_pnl",
@@ -348,4 +349,7 @@ else:
         color_discrete_map="identity",
     )
 
-    st.plotly_chart(fig)
+    fig_stats_weekday.update_xaxes(showgrid=False)  # turn off x-axis gridlines
+    fig_stats_weekday.update_yaxes(showgrid=False)  # turn off y-axis gridlines
+
+    st.plotly_chart(fig_stats_weekday)
