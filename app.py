@@ -349,4 +349,3 @@ else:
     )
 
     st.plotly_chart(fig)
-    st.write(stats_df_weekday)
