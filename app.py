@@ -151,6 +151,7 @@ else:
 
     stats_df = df[["trade_date", "net_pnl"]].groupby(["trade_date"], sort=False).sum()
     stats_df.reset_index(inplace=True)
+    stats_df = stats_df.sort_values(by = "trade_date")
 
     # set inital streak values
     stats_df["loss_streak"] = 0
@@ -299,6 +300,7 @@ else:
     fig_pnl.update_yaxes(showgrid=True)  # turn off y-axis gridlines
     st.plotly_chart(fig_pnl)
     st.write("-----")
+    
 
     # show drawdown curve
     st.subheader("Drawdown Curve")
