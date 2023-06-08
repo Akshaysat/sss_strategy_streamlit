@@ -115,24 +115,25 @@ if feature == "Analyze a particular day's trade":
     st.write("")
 
     for i in df_selected_date.index:
-        st.table(
-            df_selected_date.loc[
-                i,
-                [
-                    "entry_price",
-                    "exit_price",
-                    "entry_time",
-                    "exit_time",
-                    "sl_price",
-                    "exit_type",
-                    "trade_type",
-                    "entry_price_with_slippage",
-                    "net_pnl",
-                ],
-            ].T
-        )
-
+        
         try:
+            st.table(
+                df_selected_date.loc[
+                    i,
+                    [
+                        "entry_price",
+                        "exit_price",
+                        "entry_time",
+                        "exit_time",
+                        "sl_price",
+                        "exit_type",
+                        "trade_type",
+                        "entry_price_with_slippage",
+                        "net_pnl",
+                    ],
+                ].T
+            )
+
             pnl_movement_link = df_selected_date.loc[i]["pnl_movement"]
 
             st.image(
