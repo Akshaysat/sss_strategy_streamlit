@@ -37,6 +37,7 @@ strategy_name = st.selectbox(
         "STBT-12PM-BN (BANKNIFTY)",
         "STBT-12PM-N (NIFTY)",
         "STBT-12PM-FN (FINNIFTY)",
+        "MACD (BANKNIFTY)"
     ],
 ).lower()
 
@@ -76,6 +77,10 @@ df = pd.DataFrame(
 )
 df = df.set_index("strike")
 
+
+
+# Calculate Net PNL after slippages
+
 df["entry_price_with_slippage"] = df.apply(
     lambda x: round(x["entry_price"] * 0.98, 2)
     if x["trade_type"] == "SHORT"
@@ -83,13 +88,23 @@ df["entry_price_with_slippage"] = df.apply(
     axis=1,
 )
 
-df["net_pnl"] = df.apply(
-    lambda x: round(x["entry_price_with_slippage"] - x["exit_price"], 2)
-    if x["trade_type"] == "SHORT"
-    else round(x["exit_price"] - x["entry_price_with_slippage"], 2),
-    axis=1,
-)
+if strategy_db_name == "macd":
+    
+    df["net_pnl"] = df.apply(
+        lambda x: round(x["entry_price_with_slippage"] - x["entry_price"] + x["pnl"], 2),
+        axis=1,
+    )
 
+else:
+
+    df["net_pnl"] = df.apply(
+        lambda x: round(x["entry_price_with_slippage"] - x["exit_price"], 2)
+        if x["trade_type"] == "SHORT"
+        else round(x["exit_price"] - x["entry_price_with_slippage"], 2),
+        axis=1,
+    )
+
+# What do you want to analyze?
 feature = st.radio(
     "What do you want to analyze?",
     ("Analyze Strategy Statistics", "Analyze a particular day's trade"),
@@ -143,16 +158,23 @@ if feature == "Analyze a particular day's trade":
 
             st.write("---")
         except:
-            st.info(f'Cannot Show PNL Chart for {i}, as it was traded twice!')
+            #st.info(f'PNL Chart not available for {i}')
             st.write("---")
             continue
 
 else:
 
     # st.write(df)
-
-    stats_df = df[["trade_date", "net_pnl"]].groupby(["trade_date"], sort=False).sum()
-    stats_df.reset_index(inplace=True)
+    
+    if strategy_db_name == "macd":
+        df = df.reset_index()
+        stats_df = df[["trade_date","strike","net_pnl"]]
+        stats_df["trade_no"] = stats_df.reset_index().rename(columns={'index': 'trade_no'})['trade_no'] + 1
+    else:
+        stats_df = df[["trade_date", "net_pnl"]].groupby(["trade_date"], sort=False).sum()
+        stats_df.reset_index(inplace=True)
+    
+    
     stats_df = stats_df.sort_values(by = "trade_date")
 
     # set inital streak values
@@ -197,6 +219,7 @@ else:
                 stats_df["drawdown"].iloc[i] = (
                     stats_df["net_pnl"].iloc[i] + stats_df["drawdown"].iloc[i - 1]
                 )
+
 
     # create monthly data
     stats_df["month"] = pd.DatetimeIndex(stats_df["trade_date"]).month
@@ -297,7 +320,11 @@ else:
 
     # Show equity curve
     st.subheader("Equity Curve")
-    fig_pnl = px.line(stats_df, x="trade_date", y="cum_pnl", width=800, height=500)
+    if strategy_db_name == "macd":
+        fig_pnl = px.line(stats_df, x="trade_no", y="cum_pnl", width=800, height=500)
+    else:
+        fig_pnl = px.line(stats_df, x="trade_date", y="cum_pnl", width=800, height=500)
+        
     fig_pnl.update_xaxes(showgrid=False)  # turn off x-axis gridlines
     fig_pnl.update_yaxes(showgrid=True)  # turn off y-axis gridlines
     st.plotly_chart(fig_pnl)
@@ -306,7 +333,10 @@ else:
 
     # show drawdown curve
     st.subheader("Drawdown Curve")
-    fig_dd = px.line(stats_df, x="trade_date", y="drawdown", width=800, height=500)
+    if strategy_db_name == "macd":
+        fig_dd = px.line(stats_df, x="trade_no", y="drawdown", width=800, height=500)
+    else:
+        fig_dd = px.line(stats_df, x="trade_date", y="drawdown", width=800, height=500)
     fig_dd.update_xaxes(showgrid=False)  # turn off x-axis gridlines
     fig_dd.update_yaxes(showgrid=True)  # turn off y-axis gridlines
     st.plotly_chart(fig_dd)
