@@ -143,7 +143,7 @@ if feature == "Analyze a particular day's trade":
 
             st.write("---")
         except:
-            st.error(f'Cannot Show PNL Chart for {i}, as it was traded twice!')
+            st.info(f'Cannot Show PNL Chart for {i}, as it was traded twice!')
             st.write("---")
             continue
 
